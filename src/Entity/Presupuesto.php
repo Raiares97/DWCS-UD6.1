@@ -7,6 +7,7 @@ use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: PresupuestoRepository::class)]
+#[ORM\HasLifecycleCallbacks]
 class Presupuesto
 {
     #[ORM\Id]
@@ -16,7 +17,6 @@ class Presupuesto
 
     #[ORM\Column(length: 255)]
     private ?string $Nombre = null;
-
 
     #[ORM\Column]
     private ?float $Total = null;
@@ -69,11 +69,11 @@ class Presupuesto
     }
 
     #[ORM\PrePersist]
-    public function setFechaPedido(\DateTimeInterface $Fecha_pedido): self
+    public function setFechaPedido(): self
     {
-        $this->Fecha_pedido = $Fecha_pedido;
-
-        return $this;
+    $this->Fecha_pedido = new \DateTime();
+    
+    return $this;
     }
 
     public function getFechaModificación(): ?\DateTimeInterface
@@ -82,11 +82,10 @@ class Presupuesto
     }
 
     #[ORM\PrePersist]
-    #[ORM\PreUpdate]
-    public function setFechaModificación(?\DateTimeInterface $Fecha_modificación): self
+    public function setFechaModificacion(): self
     {
-        $this->Fecha_modificación = $Fecha_modificación;
-
-        return $this;
+    $this->Fecha_pedido = new \DateTime();
+    
+    return $this;
     }
 }
